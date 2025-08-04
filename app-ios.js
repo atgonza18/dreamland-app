@@ -7,6 +7,53 @@ if ('serviceWorker' in navigator) {
     });
 }
 
+// Fix iOS PWA tab bar safe area
+function fixIOSTabBar() {
+    const tabBar = document.querySelector('.ios-tab-bar');
+    if (!tabBar) return;
+    
+    // Check if running as standalone PWA
+    const isStandalone = window.matchMedia('(display-mode: standalone)').matches || 
+                         window.navigator.standalone === true;
+    
+    if (isStandalone) {
+        // Get the actual safe area from CSS
+        const styles = getComputedStyle(document.documentElement);
+        let safeAreaBottom = styles.getPropertyValue('--safe-bottom');
+        
+        // If no safe area detected, check viewport height difference
+        if (!safeAreaBottom || safeAreaBottom === '0px') {
+            const viewportHeight = window.innerHeight;
+            const screenHeight = screen.height;
+            
+            // On iOS, if there's a home indicator, there's usually a ~34px difference
+            if (screenHeight - viewportHeight > 100) {
+                safeAreaBottom = '34px';
+            } else {
+                safeAreaBottom = '20px'; // Default padding for newer iPhones
+            }
+        }
+        
+        // Apply the padding directly
+        tabBar.style.paddingBottom = safeAreaBottom;
+        tabBar.style.background = 'rgba(255, 255, 255, 0.95)';
+        
+        // Ensure it extends to the very bottom
+        tabBar.style.bottom = '0';
+        tabBar.style.position = 'fixed';
+        
+        console.log('Tab bar safe area fixed:', safeAreaBottom);
+    }
+}
+
+// Run fix on load and orientation change
+window.addEventListener('load', fixIOSTabBar);
+window.addEventListener('orientationchange', fixIOSTabBar);
+window.addEventListener('resize', fixIOSTabBar);
+
+// Also run after a short delay to ensure CSS is loaded
+setTimeout(fixIOSTabBar, 100);
+
 // App State
 const app = {
     currentView: 'homeView',
