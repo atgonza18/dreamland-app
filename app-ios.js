@@ -17,32 +17,27 @@ function fixIOSTabBar() {
                          window.navigator.standalone === true;
     
     if (isStandalone) {
-        // Get the actual safe area from CSS
-        const styles = getComputedStyle(document.documentElement);
-        let safeAreaBottom = styles.getPropertyValue('--safe-bottom');
+        // Force the tab bar to extend beyond the bottom
+        tabBar.style.bottom = '-50px';
+        tabBar.style.height = '99px'; // 49px tab + 50px overflow
+        tabBar.style.paddingBottom = '50px';
         
-        // If no safe area detected, check viewport height difference
-        if (!safeAreaBottom || safeAreaBottom === '0px') {
-            const viewportHeight = window.innerHeight;
-            const screenHeight = screen.height;
-            
-            // On iOS, if there's a home indicator, there's usually a ~34px difference
-            if (screenHeight - viewportHeight > 100) {
-                safeAreaBottom = '34px';
-            } else {
-                safeAreaBottom = '20px'; // Default padding for newer iPhones
-            }
+        // Create or update background extender
+        let extender = document.getElementById('tab-bar-extender');
+        if (!extender) {
+            extender = document.createElement('div');
+            extender.id = 'tab-bar-extender';
+            extender.style.position = 'fixed';
+            extender.style.bottom = '0';
+            extender.style.left = '0';
+            extender.style.right = '0';
+            extender.style.height = '100px';
+            extender.style.background = 'rgba(255, 255, 255, 0.95)';
+            extender.style.zIndex = '99';
+            document.body.appendChild(extender);
         }
         
-        // Apply the padding directly
-        tabBar.style.paddingBottom = safeAreaBottom;
-        tabBar.style.background = 'rgba(255, 255, 255, 0.95)';
-        
-        // Ensure it extends to the very bottom
-        tabBar.style.bottom = '0';
-        tabBar.style.position = 'fixed';
-        
-        console.log('Tab bar safe area fixed:', safeAreaBottom);
+        console.log('Tab bar extended to cover gap');
     }
 }
 

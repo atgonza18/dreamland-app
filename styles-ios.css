@@ -144,17 +144,31 @@ body {
 /* iOS Tab Bar */
 .ios-tab-bar {
     position: fixed;
-    bottom: 0;
+    bottom: -50px; /* Extend beyond bottom */
     left: 0;
     right: 0;
-    min-height: 49px;
+    height: calc(49px + 50px); /* Include extra height */
+    padding-top: 0;
+    padding-bottom: 50px; /* Push content up */
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border-top: 0.5px solid var(--separator);
     display: flex;
+    align-items: flex-start;
     z-index: 100;
-    /* JavaScript will handle padding-bottom dynamically */
+}
+
+/* Pseudo element to ensure coverage */
+.ios-tab-bar::after {
+    content: '';
+    position: absolute;
+    bottom: -50px;
+    left: 0;
+    right: 0;
+    height: 100px;
+    background: rgba(255, 255, 255, 0.95);
+    z-index: -1;
 }
 
 .tab-item {
