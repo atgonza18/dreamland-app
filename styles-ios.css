@@ -153,6 +153,8 @@ body {
     -webkit-backdrop-filter: blur(20px);
     border-top: 0.5px solid var(--separator);
     display: flex;
+    align-items: flex-start;
+    padding-bottom: var(--safe-bottom);
     z-index: 100;
 }
 
@@ -166,7 +168,6 @@ body {
     background: none;
     border: none;
     padding: 0;
-    margin-bottom: var(--safe-bottom);
     position: relative;
     color: var(--text-secondary);
     transition: color 0.15s ease-out, transform 0.15s ease-out;
