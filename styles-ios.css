@@ -17,8 +17,8 @@
     --ios-blue: #007AFF;
     --ios-green: #34C759;
     --ios-red: #FF3B30;
-    --safe-top: env(safe-area-inset-top);
-    --safe-bottom: env(safe-area-inset-bottom);
+    --safe-top: env(safe-area-inset-top, 0px);
+    --safe-bottom: env(safe-area-inset-bottom, 0px);
 }
 
 body {
@@ -153,7 +153,6 @@ body {
     -webkit-backdrop-filter: blur(20px);
     border-top: 0.5px solid var(--separator);
     display: flex;
-    padding-bottom: var(--safe-bottom);
     z-index: 100;
 }
 
@@ -167,6 +166,7 @@ body {
     background: none;
     border: none;
     padding: 0;
+    margin-bottom: var(--safe-bottom);
     position: relative;
     color: var(--text-secondary);
     transition: color 0.15s ease-out, transform 0.15s ease-out;
