@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="96" height="96" viewBox="0 0 96 96" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background gradient -->
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#2f3192;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#4050b5;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="96" height="96" fill="url(#bgGradient)"/>
+  
+  <!-- White circle for logo background -->
+  <circle cx="48" cy="48" r="33.599999999999994" fill="white"/>
+  
+  <!-- D Letter -->
+  <text x="48" y="48" 
+        font-family="Arial, sans-serif" 
+        font-size="38.400000000000006" 
+        font-weight="bold" 
+        fill="#EF476F" 
+        text-anchor="middle" 
+        dominant-baseline="central">D</text>
+  
+  
+</svg>

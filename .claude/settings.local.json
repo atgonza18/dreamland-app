@@ -1,0 +1,20 @@
+{
+  "permissions": {
+    "allow": [
+      "WebFetch(domain:dreamlandplaycafe.com)",
+      "Bash(mkdir:*)",
+      "Bash(node:*)",
+      "Bash(python:*)",
+      "Bash(start python server.py)",
+      "Bash(move:*)",
+      "Bash(ren:*)",
+      "Bash(cp:*)",
+      "Bash(taskkill:*)",
+      "Bash(del booking.html location.html membership.html parties.html)",
+      "Bash(rm:*)",
+      "Bash(git init:*)",
+      "Bash(git add:*)"
+    ],
+    "deny": []
+  }
+}

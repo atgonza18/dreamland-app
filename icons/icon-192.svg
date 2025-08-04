@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg width="192" height="192" viewBox="0 0 192 192" xmlns="http://www.w3.org/2000/svg">
+  <!-- Background gradient -->
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#2f3192;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#4050b5;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="192" height="192" fill="url(#bgGradient)"/>
+  
+  <!-- White circle for logo background -->
+  <circle cx="96" cy="96" r="67.19999999999999" fill="white"/>
+  
+  <!-- D Letter -->
+  <text x="96" y="96" 
+        font-family="Arial, sans-serif" 
+        font-size="76.80000000000001" 
+        font-weight="bold" 
+        fill="#EF476F" 
+        text-anchor="middle" 
+        dominant-baseline="central">D</text>
+  
+  
+  <!-- Decorative stars -->
+  <g fill="#FFD700">
+    <path d="M28.799999999999997,23.04 l1.92,5.76 l5.76,0 l-4.800000000000001,3.84 l2.88,4.800000000000001 l-2.88,-4.800000000000001 l4.800000000000001,-3.84 l-5.76,0 l-1.92,-5.76 z"/>
+    <path d="M163.2,23.04 l1.92,5.76 l5.76,0 l-4.800000000000001,3.84 l2.88,4.800000000000001 l-2.88,-4.800000000000001 l4.800000000000001,-3.84 l-5.76,0 l-1.92,-5.76 z"/>
+    <path d="M28.799999999999997,157.44 l1.92,5.76 l5.76,0 l-4.800000000000001,3.84 l2.88,4.800000000000001 l-2.88,-4.800000000000001 l4.800000000000001,-3.84 l-5.76,0 l-1.92,-5.76 z"/>
+    <path d="M163.2,157.44 l1.92,5.76 l5.76,0 l-4.800000000000001,3.84 l2.88,4.800000000000001 l-2.88,-4.800000000000001 l4.800000000000001,-3.84 l-5.76,0 l-1.92,-5.76 z"/>
+  </g>
+  
+</svg>

@@ -1,0 +1,841 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    -webkit-tap-highlight-color: transparent;
+}
+
+:root {
+    --primary: #2f3192;
+    --accent: #EF476F;
+    --bg: #F2F2F7;
+    --card-bg: #FFFFFF;
+    --text-primary: #000000;
+    --text-secondary: #8E8E93;
+    --text-tertiary: #C7C7CC;
+    --separator: #E5E5EA;
+    --ios-blue: #007AFF;
+    --ios-green: #34C759;
+    --ios-red: #FF3B30;
+    --safe-top: env(safe-area-inset-top);
+    --safe-bottom: env(safe-area-inset-bottom);
+}
+
+body {
+    font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+    overflow: hidden;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    -webkit-font-smoothing: antialiased;
+    -webkit-text-size-adjust: 100%;
+}
+
+#app {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    position: relative;
+}
+
+/* View Container */
+.view-container {
+    flex: 1;
+    position: relative;
+    overflow: hidden;
+}
+
+.view {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    flex-direction: column;
+    transform: translateX(100%);
+    opacity: 0;
+    transition: none;
+    visibility: hidden;
+    will-change: transform, opacity;
+    -webkit-transform: translateX(100%);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
+    perspective: 1000px;
+}
+
+.view.active {
+    transform: translateX(0);
+    -webkit-transform: translateX(0);
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Smooth iOS-like transitions */
+.view-transitioning {
+    pointer-events: none;
+}
+
+/* Performance optimization */
+.view * {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+}
+
+/* Tab indicator that slides */
+.tab-indicator {
+    pointer-events: none;
+}
+
+/* Prevent flicker on iOS */
+.ios-header {
+    -webkit-transform: translate3d(0, 0, 0);
+    transform: translate3d(0, 0, 0);
+}
+
+/* Smooth scrolling */
+.content-scroll {
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+    -webkit-overflow-scrolling: touch;
+    scroll-behavior: smooth;
+}
+
+/* iOS Header */
+.ios-header {
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-bottom: 0.5px solid var(--separator);
+    z-index: 100;
+}
+
+.status-bar {
+    height: var(--safe-top);
+    min-height: 20px;
+}
+
+.nav-bar {
+    height: 44px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    padding: 0 16px;
+}
+
+.nav-title {
+    font-size: 17px;
+    font-weight: 600;
+    letter-spacing: -0.5px;
+}
+
+/* Content Scroll */
+.content-scroll {
+    flex: 1;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: calc(49px + var(--safe-bottom));
+}
+
+/* iOS Tab Bar */
+.ios-tab-bar {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    height: calc(49px + var(--safe-bottom));
+    background: rgba(255, 255, 255, 0.95);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-top: 0.5px solid var(--separator);
+    display: flex;
+    padding-bottom: var(--safe-bottom);
+    z-index: 100;
+}
+
+.tab-item {
+    flex: 1;
+    height: 49px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: none;
+    border: none;
+    padding: 0;
+    position: relative;
+    color: var(--text-secondary);
+    transition: color 0.15s ease-out, transform 0.15s ease-out;
+    will-change: transform;
+}
+
+.tab-item:active {
+    transform: scale(0.92);
+}
+
+.tab-item.active {
+    color: var(--ios-blue);
+}
+
+.tab-icon {
+    width: 24px;
+    height: 24px;
+    margin-bottom: 2px;
+    will-change: transform;
+}
+
+.tab-label {
+    font-size: 10px;
+    font-weight: 500;
+    will-change: opacity;
+}
+
+/* Tab animations */
+@keyframes tabBounce {
+    0% { transform: scale(1) translateY(0); }
+    25% { transform: scale(0.95) translateY(2px); }
+    50% { transform: scale(1.15) translateY(-3px); }
+    75% { transform: scale(1.05) translateY(-1px); }
+    100% { transform: scale(1) translateY(0); }
+}
+
+@keyframes iconPop {
+    0% { 
+        transform: scale(1) rotate(0deg);
+    }
+    25% { 
+        transform: scale(0.9) rotate(-3deg);
+    }
+    60% { 
+        transform: scale(1.2) rotate(2deg);
+    }
+    100% { 
+        transform: scale(1) rotate(0deg);
+    }
+}
+
+@keyframes iconShrink {
+    0% { transform: scale(1); }
+    100% { transform: scale(0.85); }
+}
+
+@keyframes labelFade {
+    0% { 
+        opacity: 0;
+        transform: translateY(3px);
+    }
+    100% { 
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+
+/* Sections */
+.section {
+    padding: 20px 16px;
+}
+
+.section-title {
+    font-size: 22px;
+    font-weight: 700;
+    margin-bottom: 16px;
+    letter-spacing: -0.5px;
+}
+
+/* First section spacing */
+.first-section {
+    padding-top: 10px;
+}
+
+/* Quick Actions */
+.quick-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.action-card {
+    flex: 1;
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 16px;
+    border: none;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--text-primary);
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    transition: transform 0.2s;
+}
+
+.action-card:active {
+    transform: scale(0.98);
+}
+
+.action-card.primary {
+    background: var(--ios-blue);
+    color: white;
+}
+
+.action-icon {
+    font-size: 24px;
+}
+
+/* Info Cards */
+.info-cards {
+    display: grid;
+    gap: 12px;
+}
+
+.info-card {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+.card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 8px;
+}
+
+.card-icon {
+    font-size: 24px;
+}
+
+.info-card h3 {
+    font-size: 17px;
+    font-weight: 600;
+}
+
+.info-card p {
+    color: var(--text-secondary);
+    font-size: 14px;
+    line-height: 1.4;
+}
+
+/* Story Card */
+.story-card {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+.story-card p {
+    color: var(--text-secondary);
+    line-height: 1.5;
+    margin-bottom: 12px;
+}
+
+.founders-badges {
+    display: flex;
+    gap: 8px;
+    margin-top: 16px;
+}
+
+.badge {
+    background: var(--bg);
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--ios-blue);
+}
+
+/* Booking Options */
+.booking-options {
+    display: grid;
+    gap: 12px;
+}
+
+.booking-option {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 16px;
+    position: relative;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    transition: all 0.2s;
+    cursor: pointer;
+    border: 2px solid transparent;
+}
+
+.booking-option:active {
+    transform: scale(0.98);
+}
+
+.booking-option.featured {
+    border: 2px solid var(--ios-blue);
+}
+
+.booking-option.selected {
+    border-color: var(--ios-green);
+    background: rgba(52, 199, 89, 0.05);
+}
+
+.selection-indicator {
+    position: absolute;
+    top: 16px;
+    right: 16px;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    background: var(--ios-green);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transform: scale(0);
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+}
+
+.booking-option.selected .selection-indicator {
+    opacity: 1;
+    transform: scale(1);
+}
+
+.checkmark {
+    color: white;
+    font-size: 14px;
+    font-weight: bold;
+}
+
+.featured-badge {
+    position: absolute;
+    top: -10px;
+    right: 16px;
+    background: var(--ios-blue);
+    color: white;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.option-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.option-header h3 {
+    font-size: 17px;
+    font-weight: 600;
+}
+
+.price {
+    color: var(--ios-green);
+    font-size: 17px;
+    font-weight: 700;
+}
+
+.booking-option p {
+    color: var(--text-secondary);
+    font-size: 14px;
+    margin-bottom: 12px;
+}
+
+.features-list {
+    list-style: none;
+    font-size: 13px;
+    color: var(--text-secondary);
+}
+
+.features-list li {
+    padding: 4px 0;
+    padding-left: 16px;
+    position: relative;
+}
+
+.features-list li:before {
+    content: "•";
+    position: absolute;
+    left: 0;
+    color: var(--ios-blue);
+}
+
+/* Package Summary */
+.selected-package-summary {
+    background: var(--ios-blue);
+    color: white;
+    border-radius: 12px;
+    padding: 16px;
+    margin-bottom: 16px;
+    text-align: center;
+}
+
+.package-name {
+    font-size: 18px;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.package-price {
+    font-size: 14px;
+    opacity: 0.9;
+}
+
+/* Forms */
+.booking-form {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 16px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+/* Booking Total */
+.booking-total {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 16px;
+    background: var(--bg);
+    border-radius: 10px;
+    margin: 20px 0;
+}
+
+.total-label {
+    font-size: 16px;
+    color: var(--text-secondary);
+    font-weight: 600;
+}
+
+.total-amount {
+    font-size: 24px;
+    font-weight: 700;
+    color: var(--ios-green);
+}
+
+.form-group {
+    margin-bottom: 16px;
+}
+
+.form-group label {
+    display: block;
+    font-size: 13px;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.ios-input, .ios-select {
+    width: 100%;
+    padding: 12px;
+    background: var(--bg);
+    border: none;
+    border-radius: 8px;
+    font-size: 17px;
+    font-family: inherit;
+    -webkit-appearance: none;
+}
+
+.ios-select {
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg width='12' height='12' viewBox='0 0 12 12' xmlns='http://www.w3.org/2000/svg'%3e%3cpath d='M6 9L2 5h8z' fill='%238E8E93'/%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    padding-right: 32px;
+}
+
+/* Stepper */
+.stepper {
+    display: flex;
+    align-items: center;
+    background: var(--bg);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.stepper-btn {
+    width: 44px;
+    height: 44px;
+    border: none;
+    background: none;
+    font-size: 24px;
+    color: var(--ios-blue);
+    font-weight: 300;
+}
+
+.stepper-btn:active {
+    background: rgba(0,122,255,0.1);
+}
+
+.stepper-value {
+    flex: 1;
+    text-align: center;
+    border: none;
+    background: none;
+    font-size: 17px;
+    padding: 12px;
+}
+
+/* iOS Button */
+.ios-button {
+    width: 100%;
+    padding: 14px;
+    border-radius: 10px;
+    border: none;
+    font-size: 17px;
+    font-weight: 600;
+    background: var(--bg);
+    color: var(--ios-blue);
+    transition: opacity 0.2s;
+}
+
+.ios-button:active {
+    opacity: 0.7;
+}
+
+.ios-button.primary {
+    background: var(--ios-blue);
+    color: white;
+}
+
+.text-button {
+    background: none;
+    border: none;
+    color: var(--ios-blue);
+    font-size: 15px;
+    font-weight: 500;
+    padding: 4px 0;
+}
+
+/* Membership */
+.membership-hero {
+    background: linear-gradient(135deg, var(--primary), #4050b5);
+    color: white;
+    padding: 30px 20px;
+    text-align: center;
+    margin: -1px;
+}
+
+.membership-hero h2 {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.membership-hero p {
+    font-size: 16px;
+    opacity: 0.9;
+}
+
+.benefits-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.benefit {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    gap: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+.benefit-icon {
+    font-size: 32px;
+}
+
+.benefit span:last-child {
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+.membership-plans {
+    display: grid;
+    gap: 12px;
+}
+
+.plan-card {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 20px;
+    position: relative;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+.plan-card.featured {
+    border: 2px solid var(--ios-blue);
+}
+
+.popular-badge {
+    position: absolute;
+    top: -10px;
+    right: 20px;
+    background: var(--ios-blue);
+    color: white;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.plan-header {
+    margin-bottom: 16px;
+}
+
+.plan-header h3 {
+    font-size: 20px;
+    font-weight: 700;
+    margin-bottom: 8px;
+}
+
+.plan-price {
+    display: flex;
+    align-items: baseline;
+    gap: 4px;
+}
+
+.amount {
+    font-size: 36px;
+    font-weight: 700;
+    color: var(--ios-blue);
+}
+
+.period {
+    font-size: 16px;
+    color: var(--text-secondary);
+}
+
+.plan-features {
+    list-style: none;
+    margin-bottom: 20px;
+}
+
+.plan-features li {
+    padding: 8px 0;
+    color: var(--text-secondary);
+    font-size: 14px;
+    padding-left: 20px;
+    position: relative;
+}
+
+.plan-features li:before {
+    content: "✓";
+    position: absolute;
+    left: 0;
+    color: var(--ios-green);
+    font-weight: bold;
+}
+
+/* Location */
+.map-container {
+    height: 200px;
+    background: var(--separator);
+    margin: -1px -16px 0;
+}
+
+.map-container iframe {
+    width: 100%;
+    height: 100%;
+}
+
+.location-info {
+    background: var(--card-bg);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+.info-row {
+    display: flex;
+    gap: 16px;
+    padding: 16px;
+    border-bottom: 0.5px solid var(--separator);
+}
+
+.info-row:last-child {
+    border-bottom: none;
+}
+
+.info-icon {
+    font-size: 24px;
+}
+
+.info-content {
+    flex: 1;
+}
+
+.info-content h3 {
+    font-size: 15px;
+    font-weight: 600;
+    margin-bottom: 4px;
+}
+
+.info-content p {
+    font-size: 14px;
+    color: var(--text-secondary);
+    margin-bottom: 8px;
+}
+
+.hours-list {
+    background: var(--card-bg);
+    border-radius: 12px;
+    overflow: hidden;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+}
+
+.hours-row {
+    display: flex;
+    justify-content: space-between;
+    padding: 12px 16px;
+    border-bottom: 0.5px solid var(--separator);
+    font-size: 15px;
+}
+
+.hours-row:last-child {
+    border-bottom: none;
+}
+
+.hours-row.closed {
+    color: var(--text-tertiary);
+}
+
+.social-links {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 12px;
+}
+
+.social-button {
+    background: var(--card-bg);
+    border-radius: 12px;
+    padding: 16px;
+    text-align: center;
+    text-decoration: none;
+    color: var(--ios-blue);
+    font-weight: 600;
+    font-size: 15px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.08);
+    transition: transform 0.2s;
+}
+
+.social-button:active {
+    transform: scale(0.98);
+}
+
+/* Responsive */
+@media (min-width: 768px) {
+    #app {
+        max-width: 428px;
+        margin: 0 auto;
+        box-shadow: 0 0 50px rgba(0,0,0,0.1);
+    }
+}
