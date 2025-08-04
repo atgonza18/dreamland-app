@@ -143,17 +143,15 @@ body {
 
 /* iOS Tab Bar */
 .ios-tab-bar {
-    position: absolute;
+    position: fixed;
     bottom: 0;
     left: 0;
     right: 0;
-    height: calc(49px + var(--safe-bottom));
     background: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     border-top: 0.5px solid var(--separator);
     display: flex;
-    align-items: flex-start;
     padding-bottom: var(--safe-bottom);
     z-index: 100;
 }
