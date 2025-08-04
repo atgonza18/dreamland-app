@@ -23,7 +23,7 @@
 
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
-    background: var(--bg);
+    background: white; /* Force white background */
     color: var(--text-primary);
     overflow: hidden;
     position: fixed;
@@ -39,6 +39,7 @@ body {
     display: flex;
     flex-direction: column;
     position: relative;
+    background: white; /* Force white background */
 }
 
 /* View Container */
@@ -144,31 +145,15 @@ body {
 /* iOS Tab Bar */
 .ios-tab-bar {
     position: fixed;
-    bottom: -50px; /* Extend beyond bottom */
+    bottom: 0;
     left: 0;
     right: 0;
-    height: calc(49px + 50px); /* Include extra height */
-    padding-top: 0;
-    padding-bottom: 50px; /* Push content up */
-    background: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    background: white; /* Solid white */
     border-top: 0.5px solid var(--separator);
     display: flex;
-    align-items: flex-start;
+    padding-bottom: constant(safe-area-inset-bottom); /* iOS 11.0 */
+    padding-bottom: env(safe-area-inset-bottom); /* iOS 11.2+ */
     z-index: 100;
-}
-
-/* Pseudo element to ensure coverage */
-.ios-tab-bar::after {
-    content: '';
-    position: absolute;
-    bottom: -50px;
-    left: 0;
-    right: 0;
-    height: 100px;
-    background: rgba(255, 255, 255, 0.95);
-    z-index: -1;
 }
 
 .tab-item {

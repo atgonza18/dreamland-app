@@ -7,47 +7,30 @@ if ('serviceWorker' in navigator) {
     });
 }
 
-// Fix iOS PWA tab bar safe area
-function fixIOSTabBar() {
-    const tabBar = document.querySelector('.ios-tab-bar');
-    if (!tabBar) return;
-    
+// Fix iOS PWA - set white background to prevent gaps
+function fixIOSPWA() {
     // Check if running as standalone PWA
     const isStandalone = window.matchMedia('(display-mode: standalone)').matches || 
                          window.navigator.standalone === true;
     
     if (isStandalone) {
-        // Force the tab bar to extend beyond the bottom
-        tabBar.style.bottom = '-50px';
-        tabBar.style.height = '99px'; // 49px tab + 50px overflow
-        tabBar.style.paddingBottom = '50px';
+        // Ensure white background on body and app
+        document.body.style.background = 'white';
+        document.getElementById('app').style.background = 'white';
         
-        // Create or update background extender
-        let extender = document.getElementById('tab-bar-extender');
-        if (!extender) {
-            extender = document.createElement('div');
-            extender.id = 'tab-bar-extender';
-            extender.style.position = 'fixed';
-            extender.style.bottom = '0';
-            extender.style.left = '0';
-            extender.style.right = '0';
-            extender.style.height = '100px';
-            extender.style.background = 'rgba(255, 255, 255, 0.95)';
-            extender.style.zIndex = '99';
-            document.body.appendChild(extender);
+        // Remove any previously created extenders
+        const oldExtender = document.getElementById('tab-bar-extender');
+        if (oldExtender) {
+            oldExtender.remove();
         }
         
-        console.log('Tab bar extended to cover gap');
+        console.log('PWA background set to white');
     }
 }
 
-// Run fix on load and orientation change
-window.addEventListener('load', fixIOSTabBar);
-window.addEventListener('orientationchange', fixIOSTabBar);
-window.addEventListener('resize', fixIOSTabBar);
-
-// Also run after a short delay to ensure CSS is loaded
-setTimeout(fixIOSTabBar, 100);
+// Run fix on load
+window.addEventListener('load', fixIOSPWA);
+window.addEventListener('orientationchange', fixIOSPWA);
 
 // App State
 const app = {
