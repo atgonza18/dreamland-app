@@ -152,7 +152,8 @@ body {
     -webkit-backdrop-filter: blur(20px);
     border-top: 0.5px solid var(--separator);
     display: flex;
-    padding-bottom: var(--safe-bottom);
+    padding-top: 0;
+    padding-bottom: env(safe-area-inset-bottom, 0);
     z-index: 100;
 }
 
